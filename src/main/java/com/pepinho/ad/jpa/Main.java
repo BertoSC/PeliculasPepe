@@ -1,6 +1,7 @@
 package com.pepinho.ad.jpa;
 
 import com.pepinho.ad.jpa.peliculas.Ocupacion;
+import com.pepinho.ad.jpa.peliculas.Pais;
 import com.pepinho.ad.jpa.peliculas.Pelicula;
 import com.pepinho.ad.jpa.peliculas.PeliculaPersonaxe;
 import jakarta.persistence.EntityManager;
@@ -9,12 +10,14 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         EntityManagerFactory emf = JPAUtil.getEmFactory();
         EntityManager em = JPAUtil.getEntityManager();
 /*
+    // EJERCICIO 09.02. Creación de consultas JPA Películas
 
     // TODAS LAS PELICULAS DE DURACION DE MAS DE 120 MINUTOS
 
@@ -90,7 +93,38 @@ var consulta = em.createQuery("select distinct p.pelicula from PeliculaPersonaxe
         }
 
      f) Obtener todas las películas que tienen un personaje interpretado por un actor que nació en un país específico y que tienen una duración mayor a 100 minutos.
+     var consulta = em.createQuery("select distinct p.pelicula from PeliculaPersonaxe p join p.personaxe pe where p.personaxe.paisNacemento ='España' and p.pelicula.duracion >100", Pelicula.class);
+        List<Pelicula> resultado = consulta.getResultList();
+        for (Pelicula pel:resultado){
+            System.out.println(pel);
+        }
+
+
+        g) Devolver todos los países que no tienen películas asociadas, puedes usar una consulta JPQL que utilice una subconsulta o un LEFT JOIN con una condición IS NULL.
+
+         var consulta = em.createQuery("select p.pais from Pais p left join Pelicula pe on (pe.pais.pais=p.pais) where pe.pais IS NULL", Pais.class);
+        List<Pais> resultado = consulta.getResultList();
+        for (Pais pel:resultado){
+            System.out.println(pel);
+        }
  */
+
+        // EJERCICIO 09.03 > Consultas SQL a JPQL (películas)
+
+
+        // Muestra la película solicitando el id
+        //SELECT castelan, orixinal, anoFin, poster IS NOT NULL as tenPoster
+        //FROM pelicula WHERE idPelicula = :identificador
+
+        Scanner sc = new Scanner(System.in);
+
+        int idEntrada = sc.nextInt();
+
+       // var consulta = em.createQuery("select p.castelan, p.orixinal, p.anofin")
+
+
+
+
 
 
 
