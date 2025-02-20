@@ -5,9 +5,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
+import org.hibernate.engine.internal.Collections;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -219,27 +219,40 @@ WHERE P.idPersonaxe=PP.idPersonaxe AND
 PP.ocupacion='OCUPACIÓNCONCRETA' AND PP.idPelicula=IDENTIFICADOR_PELICULA
 
 
-
+*/
 
 
         Scanner sc = new Scanner(System.in);
         int id = sc.nextInt();
+        Map<String,String> datos = new HashMap<>();
 
         var consulta = em.createQuery("select o.ocupacion from Ocupacion o where exists (select pe.pelicula.id from PeliculaPersonaxe pe where o.ocupacion=pe.ocupacion.ocupacion and pe.pelicula.id = :id) order by o.orde", String.class);
         consulta.setParameter("id", id);
         List <String> resultado = consulta.getResultList();
 
-        var consulta2 = em.createQuery("select pe.personaxe.nome from PeliculaPersonaxe pe where pe.pelicula.idPelicula = :id and pe.ocupacion.ocupacion = :ocupacionConcreta", String.class);
-        consulta2.setParameter("id", id);
+        for (String ocupacionConcreta: resultado) {
+            var consulta2 = em.createQuery("select pe.personaxe.nome from PeliculaPersonaxe pe where pe.pelicula.idPelicula = :id and pe.ocupacion.ocupacion = :ocupacionConcreta", String.class);
+            consulta2.setParameter("id", id);
 
-        for (String ocupacionConcreta: resultado){
-        consulta2.setParameter("ocupacionConcreta", ocupacionConcreta);
-        List <String> nombres = consulta2.getResultList();
+                consulta2.setParameter("ocupacionConcreta", ocupacionConcreta);
+                List<String> nombres = consulta2.getResultList();
+                for (String nom: nombres) {
+
+                    datos.put(ocupacionConcreta, nom);
+
+                }
+            }
 
 
-
-             System.out.println(nom+" : "+ocupacionConcreta);*/
+        for (Map.Entry<String, String> entry: datos.entrySet()) {
+            String ocupacion = entry.getKey();
+            String personaje = entry.getValue();
+            System.out.println("Ocupación: " + ocupacion);
+            System.out.println("  - " + personaje);
         }
+    }
+
+
 
 
 
