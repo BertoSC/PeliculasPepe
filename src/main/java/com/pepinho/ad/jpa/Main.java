@@ -1,9 +1,6 @@
 package com.pepinho.ad.jpa;
 
-import com.pepinho.ad.jpa.peliculas.Ocupacion;
-import com.pepinho.ad.jpa.peliculas.Pais;
-import com.pepinho.ad.jpa.peliculas.Pelicula;
-import com.pepinho.ad.jpa.peliculas.PeliculaPersonaxe;
+import com.pepinho.ad.jpa.peliculas.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -102,6 +99,8 @@ var consulta = em.createQuery("select distinct p.pelicula from PeliculaPersonaxe
 
         g) Devolver todos los países que no tienen películas asociadas, puedes usar una consulta JPQL que utilice una subconsulta o un LEFT JOIN con una condición IS NULL.
 
+
+        // select p.pais from pelicula p right join p.pais where p is null" ¿¿¿
          var consulta = em.createQuery("select p.pais from Pais p left join Pelicula pe on (pe.pais.pais=p.pais) where pe.pais IS NULL", Pais.class);
         List<Pais> resultado = consulta.getResultList();
         for (Pais pel:resultado){
@@ -111,7 +110,7 @@ var consulta = em.createQuery("select distinct p.pelicula from PeliculaPersonaxe
 
         // EJERCICIO 09.03 > Consultas SQL a JPQL (películas)
 
-
+/*
         // Muestra la película solicitando el id
         //SELECT castelan, orixinal, anoFin, poster IS NOT NULL as tenPoster
         //FROM pelicula WHERE idPelicula = :identificador
@@ -120,8 +119,92 @@ var consulta = em.createQuery("select distinct p.pelicula from PeliculaPersonaxe
 
         int idEntrada = sc.nextInt();
 
-       // var consulta = em.createQuery("select p.castelan, p.orixinal, p.anofin")
+        var consulta = em.createQuery("select p.castelan, p.orixinal, p.anoFin from Pelicula p where p.idPelicula = :id and poster IS NOT NULL");
+        consulta.setParameter("id", idEntrada);
+        List <Object[]> resultado = consulta.getResultList();
+        for (Object[] ob: resultado) {
+            System.out.println(ob[0].toString());
+        }
+*/
+        // Muestra las películas que tienen algún personaje (IS EMPTY) o no tienen personajes (IS NOT EMPTY).
 
+       /* //var consulta = em.createQuery("select pe.pelicula from PeliculaPersonaxe pe where pe.personaxe IS NOT NULL", Pelicula.class);
+        var consulta = em.createQuery("select p from Pelicula p where p.personaxes is empty");
+        var consulta = em.createQuery("select p from Pelicula p where p.personaxes is not empty");
+
+
+        List<Pelicula> resultado = consulta.getResultList();
+        for (Pelicula pe: resultado){
+            System.out.println(pe);
+        }*/
+
+        //Muestra las películas que tienen personajes con una ocupación concreta:
+        //
+        //SELECT P.nome FROM peliculapersonaxe PP, personaxe P
+        //WHERE P.idPersonaxe=PP.idPersonaxe AND
+        //PP.ocupacion='OCUPACIÓNCONCRETA' AND PP.idPelicula=IDENTIFICADOR_PELICULA
+
+/*
+        var consulta = em.createQuery("select p.pelicula from PeliculaPersonaxe p where p.ocupacion.ocupacion = 'Actor'");
+        TypedQuery q = em.createQuery("Select p "+
+// "FROM Pelicula p join p.personaxes pp " +
+// "where (pp.ocupacion.ocupacion = 'Actor')", Pelicula.class);
+//
+// for(Pelicula p :q.getResultList() ){
+// System.out.println(p);
+
+
+        List<Pelicula> resultado = consulta.getResultList();
+        for (Pelicula pe: resultado){
+            System.out.println(pe);
+        }
+
+
+        // Muestra los títulos de las películas en las que ha trabajado un actor concreto.
+
+
+        var consulta = em.createQuery("select p.pelicula from PeliculaPersonaxe p where p.ocupacion.ocupacion = 'Actor' and p.personaxe.nomeOrdenado = 'Tom Hanks'", Pelicula.class);
+        List <Pelicula> resultado = consulta.getResultList();
+        for (Pelicula pe: resultado){
+            System.out.println(pe);
+        }
+
+
+ */
+
+        //Listar el número de películas de acuerdo con el nombre propocionado:
+        // (Crea una clase PeliculaDTO con los campos idPelicula, castelan, orixinal, anoFin, tenPoster (booleano) y realiza la consulta)
+
+        // SELECT idPelicula, castelan, orixinal, anoFin, poster IS NOT NULL as tenPoster
+        // FROM pelicula WHERE castelan LIKE ‘%:nombre%’ ORDER BY 5 DESC, castelan ASC
+
+        var consulta = em.createQuery("select new PeliculaDTO(p.idPelicula, p.castelan, p.orixinal, p.anoFin) from Pelicula p where p.castelan LIKE '%Toy Story%'", PeliculaDTO.class);
+        List <PeliculaDTO> resultado = consulta.getResultList();
+        for (PeliculaDTO pe: resultado){
+            System.out.println(pe);
+        }
+
+
+
+
+
+
+        /*
+
+        Consulta los datos de las ocupaciones de los personajes de una película:
+SELECT O.ocupacion FROM ocupacion O WHERE EXISTS (
+SELECT idPelicula FROM peliculapersonaxe PP WHERE
+O.ocupacion=PP.ocupacion
+AND PP.idPelicula=IDENTIFICADOR_DE_PELICULA)
+AND  O.orde<>0 ORDER BY O.orde
+y los nombres sde los personajes que tienen esa ocupación:
+
+SELECT P.nome FROM peliculapersonaxe PP, personaxe P
+WHERE P.idPersonaxe=PP.idPersonaxe AND
+PP.ocupacion='OCUPACIÓNCONCRETA' AND PP.idPelicula=IDENTIFICADOR_PELICULA
+
+
+         */
 
 
 
