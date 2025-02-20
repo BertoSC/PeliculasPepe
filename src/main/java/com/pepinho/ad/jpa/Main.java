@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        EntityManagerFactory emf = JPAUtil.getEmFactory();
-        EntityManager em = JPAUtil.getEntityManager();
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("peliculas");
+        EntityManager em = emf.createEntityManager();
 /*
     // EJERCICIO 09.02. Creación de consultas JPA Películas
 
@@ -170,7 +170,7 @@ var consulta = em.createQuery("select distinct p.pelicula from PeliculaPersonaxe
         }
 
 
- */
+
 
         //Listar el número de películas de acuerdo con el nombre propocionado:
         // (Crea una clase PeliculaDTO con los campos idPelicula, castelan, orixinal, anoFin, tenPoster (booleano) y realiza la consulta)
@@ -178,14 +178,29 @@ var consulta = em.createQuery("select distinct p.pelicula from PeliculaPersonaxe
         // SELECT idPelicula, castelan, orixinal, anoFin, poster IS NOT NULL as tenPoster
         // FROM pelicula WHERE castelan LIKE ‘%:nombre%’ ORDER BY 5 DESC, castelan ASC
 
-        var consulta = em.createQuery("select new PeliculaDTO(p.idPelicula, p.castelan, p.orixinal, p.anoFin) from Pelicula p where p.castelan LIKE '%Toy Story%'", PeliculaDTO.class);
-        List <PeliculaDTO> resultado = consulta.getResultList();
-        for (PeliculaDTO pe: resultado){
+        var consulta = em.createQuery(
+                "SELECT new PeliculaDTO(p.idPelicula, p.castelan, p.orixinal, p.anoFin, CASE WHEN p.poster IS NOT NULL THEN TRUE ELSE FALSE END) " +
+                        "FROM Pelicula p " +
+                        "WHERE p.castelan LIKE '%guerra%' AND p.poster is not null ORDER BY p.anoFin DESC, p.castelan ASC",
+                PeliculaDTO.class
+        );
+        List<PeliculaDTO> resultado = consulta.getResultList();
+
+        for (PeliculaDTO pe : resultado) {
             System.out.println(pe);
         }
 
+        var countQuery = em.createQuery(
+                "SELECT COUNT(p) FROM Pelicula p WHERE p.castelan LIKE :nombre AND p.poster IS NOT NULL",
+                Long.class
+        );
+        countQuery.setParameter("nombre", "%a%");
+        Long totalPeliculas = countQuery.getSingleResult();
+
+        System.out.println("Número total de películas: " + totalPeliculas);
 
 
+*/
 
 
 
@@ -204,12 +219,32 @@ WHERE P.idPersonaxe=PP.idPersonaxe AND
 PP.ocupacion='OCUPACIÓNCONCRETA' AND PP.idPelicula=IDENTIFICADOR_PELICULA
 
 
-         */
+
+
+
+        Scanner sc = new Scanner(System.in);
+        int id = sc.nextInt();
+
+        var consulta = em.createQuery("select o.ocupacion from Ocupacion o where exists (select pe.pelicula.id from PeliculaPersonaxe pe where o.ocupacion=pe.ocupacion.ocupacion and pe.pelicula.id = :id) order by o.orde", String.class);
+        consulta.setParameter("id", id);
+        List <String> resultado = consulta.getResultList();
+
+        var consulta2 = em.createQuery("select pe.personaxe.nome from PeliculaPersonaxe pe where pe.pelicula.idPelicula = :id and pe.ocupacion.ocupacion = :ocupacionConcreta", String.class);
+        consulta2.setParameter("id", id);
+
+        for (String ocupacionConcreta: resultado){
+        consulta2.setParameter("ocupacionConcreta", ocupacionConcreta);
+        List <String> nombres = consulta2.getResultList();
+
+
+
+             System.out.println(nom+" : "+ocupacionConcreta);*/
+        }
 
 
 
 
 
 
-    }
+
 }
