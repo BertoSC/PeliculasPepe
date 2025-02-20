@@ -9,13 +9,13 @@ public class PeliculaDTO implements Serializable {
     String castelan;
     String orixinal;
     Short anoFin;
-    Boolean tenPoster;
+    boolean tenPoster;
 
 
     public PeliculaDTO() {
     }
 
-    public PeliculaDTO(Long idPelicula, String castelan, String orixinal, Short anoFin, Boolean tenPoster) {
+    public PeliculaDTO(Long idPelicula, String castelan, String orixinal, Short anoFin, boolean tenPoster) {
         this.idPelicula = idPelicula;
         this.castelan = castelan;
         this.orixinal = orixinal;
@@ -23,7 +23,7 @@ public class PeliculaDTO implements Serializable {
         this.tenPoster = tenPoster;
     }
 
-    public PeliculaDTO(String castelan, String orixinal, Short anoFin, Boolean tenPoster) {
+    public PeliculaDTO(String castelan, String orixinal, Short anoFin, boolean tenPoster) {
         this.castelan = castelan;
         this.orixinal = orixinal;
         this.anoFin = anoFin;
