@@ -218,11 +218,7 @@ SELECT P.nome FROM peliculapersonaxe PP, personaxe P
 WHERE P.idPersonaxe=PP.idPersonaxe AND
 PP.ocupacion='OCUPACIÓNCONCRETA' AND PP.idPelicula=IDENTIFICADOR_PELICULA
 
-
-*/
-
-
-        Scanner sc = new Scanner(System.in);
+ Scanner sc = new Scanner(System.in);
         int id = sc.nextInt();
         Map<String,String> datos = new HashMap<>();
 
@@ -250,13 +246,14 @@ PP.ocupacion='OCUPACIÓNCONCRETA' AND PP.idPelicula=IDENTIFICADOR_PELICULA
             System.out.println("Ocupación: " + ocupacion);
             System.out.println("  - " + personaje);
         }
+
+*/
+
+     PaginadorPeliculas app = new PaginadorPeliculas(em);
+
+
+
     }
-
-
-
-
-
-
 
 
 
