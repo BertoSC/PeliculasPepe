@@ -25,7 +25,7 @@ public class PaginadorPeliculas implements Serializable {
     }
 
     public void setTotalPaginas() {
-        this.totalPaginas = peliculaDAO.findTotalPelis()/10;
+        this.totalPaginas = (peliculaDAO.findTotalPelis()+10-1)/10;
     }
 
     public int getPaginaActual() {
