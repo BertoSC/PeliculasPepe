@@ -40,7 +40,7 @@ public class PeliculaDAO {
                         "    p.castelan, \n" +
                         "    p.orixinal, \n" +
                         "    p.anoFin, \n" +
-                        "    COALESCE((SELECT pe.personaxe.nome FROM PeliculaPersonaxe pe WHERE pe.pelicula = p AND pe.ocupacion.ocupacion = 'Director'  ORDER BY pe.personaxe.nome ASC LIMIT 1), 'Desconocido')"+
+                        "    COALESCE((SELECT pe.personaxe.nome FROM PeliculaPersonaxe pe WHERE pe.pelicula = p AND pe.ocupacion.ocupacion = 'Director'), 'Desconocido')"+
                         ")\n" +
                         "FROM Pelicula p", PeliculaPaginaDTO.class)
                 .setFirstResult(inicio)
