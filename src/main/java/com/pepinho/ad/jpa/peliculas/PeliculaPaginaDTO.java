@@ -96,7 +96,7 @@ public class PeliculaPaginaDTO {
 
     @Override
     public String toString() {
-        return "id: "+ idPelicula + " nombre " + castelan + " nombre original: "+ orixinal + " año estreno: "+ anoFin +" director: " + director;
+        return "ID: "+ idPelicula + " || NOMBRE: " + castelan + " || ORIGINAL: "+ orixinal + " || ESTRENO: "+ anoFin +" || DIRECTOR: " + director;
     }
 }
 
